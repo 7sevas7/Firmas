@@ -1,11 +1,5 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
 
-import React from 'react';
+import React, { useState,createContext } from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   StyleSheet,
@@ -20,43 +14,31 @@ import FirmHome from './app/views/HomeFirma';
 import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+//Acciones Api
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-// function Section({children, title}: SectionProps): React.JSX.Element {
-  
-//   return (
-//     <View style={styles.sectionContainer}>
-//        <FirmaScreen/>
-//     </View>
-//   );
-// }
 
 var Stack = createNativeStackNavigator();
-function App(): React.JSX.Element {
 
+
+function App(): React.JSX.Element {
+const [estado, setEstado] = useState();
   return (
     
      <NavigationContainer>
         <Stack.Navigator initialRouteName='Home'>
           <Stack.Screen
-            name='Home'
+            name='Firmas'
             component={FirmaScreen}
             options={{title:"Home"}}
           />
           
           <Stack.Screen 
-          name="Homes"
+          name="Home"
           component={FirmHome}
           options={{title:"El verdadero"}}
           />
         </Stack.Navigator>
      </NavigationContainer>
-     
-
-  
   );
 }
 

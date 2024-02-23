@@ -3,7 +3,18 @@ import React,{useRef} from 'react';
 import {StackActions} from '@react-navigation/native';
 import { Button, View,StyleSheet,TouchableHighlight,Text} from 'react-native';
 
-export default class FirmaScreen extends React.Component{
+type FirmaScreenProps = {
+
+  firmaData: {},
+  firmaError: {},
+};
+type FirmaScreenState = {};
+
+export default class FirmaScreen extends React.Component<Propss,MYState>{
+   state={
+      data :{}
+    }
+
   render() {
     //Navegacion 
       return (
