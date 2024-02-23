@@ -1,6 +1,6 @@
 
 import React, { useState,createContext } from 'react';
-import type {PropsWithChildren} from 'react';
+
 import {
   StyleSheet,
 
@@ -8,35 +8,37 @@ import {
 
 //Vistas 
 import FirmaScreen from './app/views/FirmaScreen';
-import FirmHome from './app/views/HomeFirma';
+import FirmaHome from './app/views/HomeFirma';
+
 
 //Configuracion de Navigate 
 import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import VistaPrueb ,{RootParams}from './app/views/VistaPrueb';
 
 //Acciones Api
 
 
-var Stack = createNativeStackNavigator();
+var Stack = createNativeStackNavigator<RootParams>();
 
 
 function App(): React.JSX.Element {
+
+ 
 const [estado, setEstado] = useState();
   return (
     
      <NavigationContainer>
         <Stack.Navigator initialRouteName='Home'>
-          <Stack.Screen
-            name='Firmas'
-            component={FirmaScreen}
-            options={{title:"Home"}}
-          />
-          
           <Stack.Screen 
-          name="Home"
-          component={FirmHome}
-          options={{title:"El verdadero"}}
+            name='Home'
+            component={FirmaHome}
           />
+          <Stack.Screen 
+            name="Prueba"
+            component={VistaPrueb}
+          />
+         
         </Stack.Navigator>
      </NavigationContainer>
   );

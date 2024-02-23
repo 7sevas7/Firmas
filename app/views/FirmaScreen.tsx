@@ -1,21 +1,27 @@
 import SignatureCapture from 'react-native-signature-capture';
 import React,{useRef} from 'react';
-import {StackActions} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/core';
 import { Button, View,StyleSheet,TouchableHighlight,Text} from 'react-native';
 
-type FirmaScreenProps = {
 
-  firmaData: {},
-  firmaError: {},
+;
+type EstadosProps={
+  salud:string,
+}
+type EstaState={
+valor:0
+}
+
+
+
+export default class FirmaScreen extends React.Component<EstadosProps,EstaState>{
+  
+state:EstaState={
+valor:234234
 };
-type FirmaScreenState = {};
-
-export default class FirmaScreen extends React.Component<Propss,MYState>{
-   state={
-      data :{}
-    }
-
   render() {
+    
+    const {salud} = this.props;
     //Navegacion 
       return (
           <View style={{ flex: 1, flexDirection: "column" }}>
@@ -44,13 +50,9 @@ export default class FirmaScreen extends React.Component<Propss,MYState>{
             <TouchableHighlight style={styles.buttonStyleReset}
               onPress={() => { this.resetSign() }} >
               <Text style={styles.text}>Reiniciar</Text>
-            </TouchableHighlight>
+            </TouchableHighlight>            
 
-
-
-            
           </View>
-
         </View>          
       );
   }
@@ -60,11 +62,12 @@ export default class FirmaScreen extends React.Component<Propss,MYState>{
   }
 
   resetSign() {
-s
+
       this.refs["sign"].resetImage();
   }
 
   _onSaveEvent(result) {
+ 
       //result.encoded - for the base64 encoded png
       //result.pathName - for the file path name
       console.log(result);
