@@ -1,27 +1,22 @@
 import SignatureCapture from 'react-native-signature-capture';
 import React,{useRef} from 'react';
-import {useNavigation} from '@react-navigation/core';
-import { Button, View,StyleSheet,TouchableHighlight,Text} from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {  View,StyleSheet,TouchableHighlight,Text} from 'react-native';
 
+import { RootParams } from '../../App';
 
-;
-type EstadosProps={
-  salud:string,
-}
-type EstaState={
-valor:0
-}
+type RuteProps= NativeStackScreenProps<RootParams,'FirmaInput'>;
 
 
 
-export default class FirmaScreen extends React.Component<EstadosProps,EstaState>{
+
+export default class FirmaScreen extends React.Component<RuteProps>{
   
-state:EstaState={
-valor:234234
-};
+
   render() {
-    
-    const {salud} = this.props;
+    //@ts-ignore
+    const {Nombre} = this.props.route.params;
+    console.log(Nombre);
     //Navegacion 
       return (
           <View style={{ flex: 1, flexDirection: "column" }}>
@@ -29,6 +24,7 @@ valor:234234
           <SignatureCapture
             style={[{ flex: 1 }, styles.signature]}
             ref="sign"
+            //@ts-ignore
             onSaveEvent={this._onSaveEvent}
             onDragEvent={this._onDragEvent}
             saveImageFileInExtStorage={false}
@@ -58,15 +54,16 @@ valor:234234
   }
 
   saveSign() {
-      this.refs["sign"].saveImage();
+//@ts-ignore
+    this.refs["sign"].saveImage();
   }
 
   resetSign() {
-
+//@ts-ignore
       this.refs["sign"].resetImage();
   }
 
-  _onSaveEvent(result) {
+  _onSaveEvent(result:string) {
  
       //result.encoded - for the base64 encoded png
       //result.pathName - for the file path name

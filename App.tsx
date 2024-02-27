@@ -14,31 +14,37 @@ import FirmaHome from './app/views/HomeFirma';
 //Configuracion de Navigate 
 import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import VistaPrueb ,{RootParams}from './app/views/VistaPrueb';
+import VistaPrueb from './app/views/VistaPrueb';
 
 //Acciones Api
 
+export type RootParams = {
+  Home: undefined;
+  FirmaInput:{Nombre:string};
+  Prueba:undefined;
 
+
+};
 var Stack = createNativeStackNavigator<RootParams>();
 
 
 function App(): React.JSX.Element {
 
- 
-const [estado, setEstado] = useState();
+
   return (
     
      <NavigationContainer>
-        <Stack.Navigator initialRouteName='Home'>
+        <Stack.Navigator initialRouteName="Home">
           <Stack.Screen 
-            name='Home'
+            name="Home"
             component={FirmaHome}
           />
           <Stack.Screen 
-            name="Prueba"
-            component={VistaPrueb}
+            name="FirmaInput"
+            component={FirmaScreen}
+            
           />
-         
+        
         </Stack.Navigator>
      </NavigationContainer>
   );

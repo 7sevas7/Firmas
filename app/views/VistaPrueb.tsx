@@ -1,16 +1,14 @@
 import { View ,Text} from "react-native";
 import { NativeStackScreenProps} from "@react-navigation/native-stack";
+import { RootParams } from "../../App";
 
 
-export type RootParams = {
-    Nombre: undefined;
 
-  };
-
-  type Props = NativeStackScreenProps<RootParams,'Nombre'>;
+  type Props = NativeStackScreenProps<RootParams,'Home'>;
 
 export default function VistaPrueb({route,navigation}:Props){
 
+console.log(route);
 
     return (
         <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', backgroundColor:'#656565'}}>

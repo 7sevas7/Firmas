@@ -1,9 +1,9 @@
 import { Text,View,FlatList,TouchableHighlight,Button } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import React ,{PropsWithChildren,useEffect, useState}from 'react';
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import React ,{useEffect, useState}from 'react';
 import {getFirmaAction}from '../controllers/GetFirma'
-import Prueba from './VistaPrueb'
-import { RootParams} from "./VistaPrueb";
+
+import { RootParams } from "../../App";
 
 type Veneficiario = {
     idBeneficiario:string,
@@ -13,10 +13,12 @@ type Veneficiario = {
     nombre:string
 
 }
-export default function HomeFirmas<PropPueba>(){
+
+type RuteProps= NativeStackScreenProps<RootParams>;
+export default function HomeFirmas({navigation,route}:RuteProps){
 
     const [veneficiario,setveneficiario] = useState<Array<Veneficiario>>([]);
-   const navi = useNavigation<RootParams>();
+  
   
     useEffect( ()=>{
     console.log();
@@ -40,7 +42,7 @@ const imprime =()=>{
             <View >
               <View>
                 <Text>
-                  <Prueba Nombre="SS"/>
+             
                 </Text>
               </View>
             <Text style={{ fontSize: 30 }}>Luz Nayeli Santander Ramírez</Text>
@@ -66,7 +68,8 @@ const imprime =()=>{
              keyExtractor={item => item.idBeneficiario}
            />
            <Button title='Recargar'  onPress={imprime}></Button>
-           <Button title='Ir'  onPress={()=>navi.navigate("Prueba",{Nombre:"sEBASTIAN"})} />
+       
+          <Button title='Ir'  onPress={()=>navigation.navigate("FirmaInput",{Nombre:"sEBASTIAN"})} /> 
            </View>
          </View>
 );
