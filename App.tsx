@@ -9,6 +9,7 @@ import {
 //Vistas 
 import FirmaScreen from './app/views/FirmaScreen';
 import FirmaHome from './app/views/HomeFirma';
+import PDFScreen from './app/views/PDFScreen';
 
 
 //Configuracion de Navigate 
@@ -17,12 +18,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import VistaPrueb from './app/views/VistaPrueb';
 
 //Acciones Api
+export type PdfTypes={
+  firmaRespInf:string; 
+  firmaApliEv:string;
+};
+export const Context = createContext<PdfTypes>({firmaApliEv:"",firmaRespInf:""});
 
 export type RootParams = {
   Home: undefined;
   FirmaInput:{Nombre:string};
   Prueba:undefined;
-
+  PdfView : PdfTypes;
 
 };
 var Stack = createNativeStackNavigator<RootParams>();
@@ -30,9 +36,8 @@ var Stack = createNativeStackNavigator<RootParams>();
 
 function App(): React.JSX.Element {
 
-
   return (
-    
+   
      <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen 
@@ -44,10 +49,13 @@ function App(): React.JSX.Element {
             component={FirmaScreen}
             
           />
-        
+        <Stack.Screen
+          name="PdfView"
+          component={PDFScreen}
+        />
         </Stack.Navigator>
      </NavigationContainer>
-  );
+       );
 }
 
 const styles = StyleSheet.create({

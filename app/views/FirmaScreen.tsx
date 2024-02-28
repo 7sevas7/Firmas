@@ -14,7 +14,7 @@ export default class FirmaScreen extends React.Component<RuteProps>{
   
 
   render() {
-    //@ts-ignore
+   
     const {Nombre} = this.props.route.params;
     console.log(Nombre);
     //Navegacion 

@@ -1,16 +1,17 @@
 import { Text,View,FlatList,TouchableHighlight,Button } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React ,{useEffect, useState}from 'react';
+import React ,{useEffect, useState,useContext}from 'react';
 import {getFirmaAction}from '../controllers/GetFirma'
 
 import { RootParams } from "../../App";
 
 type Veneficiario = {
-    idBeneficiario:string,
-    idEvEcom:string,
-    firmaRespInf:string,
-    curp:string,
-    nombre:string
+    idBeneficiario:string;
+    idEvEcom:string;
+    firmaRespInf:string;
+    curp:string;
+    nombre:string;
+    firmaApliEv:string;
 
 }
 
@@ -21,7 +22,6 @@ export default function HomeFirmas({navigation,route}:RuteProps){
   
   
     useEffect( ()=>{
-    console.log();
         const cal =async ()=>{
           const ll = await getFirmaAction("GET","lsantander");
           setveneficiario(ll);
@@ -58,8 +58,7 @@ const imprime =()=>{
                    <TouchableHighlight
                      activeOpacity={0.6}
                      underlayColor="#DDDDDD"
-                     onPress={()=>console.log(item.curp)}
-                   >
+                     onPress={()=>navigation.navigate("PdfView",{firmaApliEv: item.firmaApliEv,firmaRespInf: item.firmaRespInf })} >
                      <Text style={{ fontSize: 20,color:'black' }}>{item.curp}</Text>
                    </TouchableHighlight>
                  </View>
@@ -67,9 +66,10 @@ const imprime =()=>{
              )}
              keyExtractor={item => item.idBeneficiario}
            />
-           <Button title='Recargar'  onPress={imprime}></Button>
+           <Button title='Recargar'  onPress={imprime}/>
        
           <Button title='Ir'  onPress={()=>navigation.navigate("FirmaInput",{Nombre:"sEBASTIAN"})} /> 
+
            </View>
          </View>
 );
