@@ -16,19 +16,22 @@ import PDFScreen from './app/views/PDFScreen';
 import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import VistaPrueb from './app/views/VistaPrueb';
+import PDFp from './app/views/PDFp';
 
 //Acciones Api
 export type PdfTypes={
+  IdEvCom:string;
   firmaRespInf:string; 
   firmaApliEv:string;
 };
-export const Context = createContext<PdfTypes>({firmaApliEv:"",firmaRespInf:""});
+export const Context = createContext<PdfTypes>({IdEvCom:"",firmaApliEv:"",firmaRespInf:""});
 
 export type RootParams = {
   Home: undefined;
   FirmaInput:{Nombre:string};
   Prueba:undefined;
   PdfView : PdfTypes;
+  PdfP:PdfTypes;
 
 };
 var Stack = createNativeStackNavigator<RootParams>();
@@ -42,17 +45,23 @@ function App(): React.JSX.Element {
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen 
             name="Home"
+            options={{title:"Inicio"}}
             component={FirmaHome}
           />
           <Stack.Screen 
             name="FirmaInput"
+            options={{title:"Captura de Firmas"}}
             component={FirmaScreen}
             
           />
         <Stack.Screen
           name="PdfView"
+          options={{title:"Visualización de Documentos"}}
           component={PDFScreen}
         />
+        <Stack.Screen 
+        name='PdfP'
+        component={PDFp}/>
         </Stack.Navigator>
      </NavigationContainer>
        );

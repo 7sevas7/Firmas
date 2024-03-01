@@ -58,7 +58,7 @@ const imprime =()=>{
                    <TouchableHighlight
                      activeOpacity={0.6}
                      underlayColor="#DDDDDD"
-                     onPress={()=>navigation.navigate("PdfView",{firmaApliEv: item.firmaApliEv,firmaRespInf: item.firmaRespInf })} >
+                     onPress={()=>navigation.navigate("PdfView",{IdEvCom:item.idEvEcom,firmaApliEv: item.firmaApliEv,firmaRespInf: item.firmaRespInf })} >
                      <Text style={{ fontSize: 20,color:'black' }}>{item.curp}</Text>
                    </TouchableHighlight>
                  </View>
