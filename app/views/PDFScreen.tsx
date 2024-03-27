@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions, View, Text, Image, TouchableHighlight } from "react-native";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Pdf from 'react-native-pdf';
-import { RootParams } from "../../App";
+import { RootParams } from "../stateAndProps/PropsRoot";
 import { useState, useEffect } from "react";
 import {getPdfAction} from "../controllers/PDFRequest";
 
@@ -10,17 +10,14 @@ type States = {
   mainPdf: string;
   firmaApliEv: string;
   firmaRespInf: string;
-}
+};
 
 function PDFScreen({ navigation, route }: RuteProps) {
   const [Pdfs, setFirmas] = useState<States>();
 
   useEffect(() => {
     //Llamando Api para pdf Principal
-
     Setters();
-
-
   }, []);
   const Setters = async () => {
     const mainPdf: string = await getPdfAction("GET", route.params.IdEvCom);
@@ -81,9 +78,10 @@ function PDFScreen({ navigation, route }: RuteProps) {
       </View>
     </View>
   );
-}
-//EV quiere decir que es la firma del Evaluador 
+  //EV quiere decir que es la firma del Evaluador 
 const PostFirma =(tipo:string)=>{
+    navigation.navigate('FirmaInput',{Nombre:""});
+}
 
 }
 

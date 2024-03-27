@@ -1,39 +1,25 @@
 
 import React, { useState,createContext } from 'react';
+//Configuracion de estilos
+import { StyleSheet} from 'react-native';
 
-import {
-  StyleSheet,
-
-} from 'react-native';
+//Configuracion de Estados y propiedades 
+import {PdfTypes,RootParams} from './app/stateAndProps/PropsRoot';
 
 //Vistas 
 import FirmaScreen from './app/views/FirmaScreen';
 import FirmaHome from './app/views/HomeFirma';
 import PDFScreen from './app/views/PDFScreen';
 
-
 //Configuracion de Navigate 
 import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import VistaPrueb from './app/views/VistaPrueb';
-import PDFp from './app/views/PDFp';
 
 //Acciones Api
-export type PdfTypes={
-  IdEvCom:string;
-  firmaRespInf:string; 
-  firmaApliEv:string;
-};
+
 export const Context = createContext<PdfTypes>({IdEvCom:"",firmaApliEv:"",firmaRespInf:""});
 
-export type RootParams = {
-  Home: undefined;
-  FirmaInput:{Nombre:string};
-  Prueba:undefined;
-  PdfView : PdfTypes;
-  PdfP:PdfTypes;
 
-};
 var Stack = createNativeStackNavigator<RootParams>();
 
 
@@ -59,9 +45,7 @@ function App(): React.JSX.Element {
           options={{title:"Visualización de Documentos"}}
           component={PDFScreen}
         />
-        <Stack.Screen 
-        name='PdfP'
-        component={PDFp}/>
+       
         </Stack.Navigator>
      </NavigationContainer>
        );

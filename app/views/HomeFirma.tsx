@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React ,{useEffect, useState,useContext}from 'react';
 import {getFirmaAction}from '../controllers/GetFirma'
 
-import { RootParams } from "../../App";
+import { RootParams } from "../stateAndProps/PropsRoot";
 
 type Veneficiario = {
     idBeneficiario:string;
@@ -23,7 +23,7 @@ export default function HomeFirmas({navigation,route}:RuteProps){
   
     useEffect( ()=>{
         const cal =async ()=>{
-          const ll = await getFirmaAction("GET","lsantander");
+          const ll = await getFirmaAction("GET","fridaha");
           setveneficiario(ll);
         };
 
@@ -33,7 +33,7 @@ export default function HomeFirmas({navigation,route}:RuteProps){
 
       
 const imprime =()=>{
-  console.log(veneficiario);
+  console.log("==>"+veneficiario);
 }
     
         return (  
@@ -68,7 +68,7 @@ const imprime =()=>{
            />
            <Button title='Recargar'  onPress={imprime}/>
        
-          <Button title='Ir'  onPress={()=>navigation.navigate("FirmaInput",{Nombre:"sEBASTIAN"})} /> 
+          <Button title='Ir'  onPress={()=>navigation.navigate("FirmaInput",{Nombre:"sEBASTIAN",})} /> 
 
            </View>
          </View>

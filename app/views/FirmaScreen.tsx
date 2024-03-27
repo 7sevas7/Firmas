@@ -3,7 +3,7 @@ import React,{useRef} from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {  View,StyleSheet,TouchableHighlight,Text} from 'react-native';
 
-import { RootParams } from '../../App';
+import { RootParams } from '../stateAndProps/PropsRoot';
 
 type RuteProps= NativeStackScreenProps<RootParams,'FirmaInput'>;
 
@@ -11,10 +11,7 @@ type RuteProps= NativeStackScreenProps<RootParams,'FirmaInput'>;
 
 
 export default class FirmaScreen extends React.Component<RuteProps>{
-  
-
-  render() {
-   
+  render() {   
     const {Nombre} = this.props.route.params;
     console.log(Nombre);
     //Navegacion 

@@ -5,13 +5,13 @@ export const  getFirmaAction =  (method:string, route:string) => {
   const config = { method: method, headers: { 'Content-Type': 'application/json', } };
   console.log("Api");
   try{
-  const res = fetch(INIT_DATA+route,config)
+  const res = fetch(INIT_DATA + route, config)
   .then((res)=>res.json())
   .catch((err)=>{console.log(err)});
   return res;
   
   }catch(error){
-    console.log(error);
+    console.log("Error"+error);
   }
 }
 
