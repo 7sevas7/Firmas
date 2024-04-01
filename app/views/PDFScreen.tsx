@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Pdf from 'react-native-pdf';
 import { RootParams } from "../stateAndProps/PropsRoot";
 import { useState, useEffect } from "react";
-import {getPdfAction} from "../controllers/PDFRequest";
+import {PdfAction} from "../controllers/PDFRequest";
 
 type RuteProps = NativeStackScreenProps<RootParams, 'PdfView'>;
 type States = {
@@ -20,17 +20,22 @@ function PDFScreen({ navigation, route }: RuteProps) {
     Setters();
   }, []);
   const Setters = async () => {
-    const mainPdf: string = await getPdfAction("GET", route.params.IdEvCom);
+    const mainPdf: string = await PdfAction("GET", route.params.IdEvCom);
 
     setFirmas({
-      mainPdf: mainPdf,
-      firmaApliEv: route.params.firmaApliEv,
-      firmaRespInf: route.params.firmaRespInf
+      mainPdf: mainPdf,//Es el PDF, donde muestra todos sus datos
+      firmaApliEv: route.params.firmaApliEv,//Img Firma Aplica Evaluador
+      firmaRespInf: route.params.firmaRespInf//Img Firma Responsable de la información 
     });
   };
+  //EV quiere decir que es la firma del Evaluadorv 
+const PostFirma =(tipo:string)=>{
+    navigation.navigate('FirmaInput',{Type:tipo});
+}
   const source = { uri: "data:application/pdf;base64," + Pdfs?.mainPdf };
-  console.log(Pdfs?.mainPdf);
+    
   return (
+
     <View style={styles.container}>
 
       <Pdf source={source}
@@ -68,20 +73,17 @@ function PDFScreen({ navigation, route }: RuteProps) {
           <Image style={{ width: '50%', height: '60%' }} source={{ uri: "data:image/png;base64," + Pdfs?.firmaRespInf }}></Image>
 
           <TouchableHighlight
-            
+            onPress={()=>PostFirma("Resp")}
             underlayColor="#DDDDDD"
             style={{ backgroundColor: '#a9453b', borderRadius: 10, padding: 10, marginTop: 6 }}
           >
-            <Text style={{ color: 'white', fontSize: 20 }}>Firmar Responsable de la información</Text>
+            <Text style={{ color: 'white', fontSize: 20 }}>Firmar Responsable de la Información</Text>
           </TouchableHighlight>
         </View>
       </View>
     </View>
   );
-  //EV quiere decir que es la firma del Evaluador 
-const PostFirma =(tipo:string)=>{
-    navigation.navigate('FirmaInput',{Nombre:""});
-}
+
 
 }
 

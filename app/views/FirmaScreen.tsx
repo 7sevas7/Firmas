@@ -1,34 +1,61 @@
 import SignatureCapture from 'react-native-signature-capture';
-import React,{useRef} from 'react';
+import React,{useContext, useRef} from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import {  View,StyleSheet,TouchableHighlight,Text} from 'react-native';
+import {  View,StyleSheet,TouchableHighlight,Text, AppRegistry,BackHandler} from 'react-native';
 
 import { RootParams } from '../stateAndProps/PropsRoot';
-
+import { Contes, Contexx } from '../../App';
+import { PdfAction } from '../controllers/PDFRequest';
 type RuteProps= NativeStackScreenProps<RootParams,'FirmaInput'>;
 
 
 
+ type IState={
+  TypeSignature:string
+}
+type Imagen ={
+  encoded:string,
+  pathName:string
 
-export default class FirmaScreen extends React.Component<RuteProps>{
+}
+
+export default class FirmaScreen extends React.Component<RuteProps,IState>{
+  state: IState={
+    TypeSignature:this.props.route.params.Type
+  }
+  static hola:string ="Saludo";
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+  componentDidMount() { 
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+   
+  }
+  handleBackButtonClick  =()=> {
+    this.props.navigation.goBack();
+    return(true)
+  }
+
+  constructor(props:RuteProps){
+
+   super(props); 
+  }
+
   render() {   
-    const {Nombre} = this.props.route.params;
-    console.log(Nombre);
-    //Navegacion 
+    //Naveg acion 
       return (
-          <View style={{ flex: 1, flexDirection: "column" }}>
-           
+          <View style={{ flex: 1, flexDirection: "column" }}>           
           <SignatureCapture
             style={[{ flex: 1 }, styles.signature]}
-            ref="sign"
-            //@ts-ignore
+            ref='sign'  
             onSaveEvent={this._onSaveEvent}
-            onDragEvent={this._onDragEvent}
             saveImageFileInExtStorage={false}
             showNativeButtons={false}
             showTitleLabel={false}
             backgroundColor="#ffffff"
             strokeColor="#000000"
+         
+            //@ts-ignore
             minStrokeWidth={4}
             maxStrokeWidth={4}
             viewMode={"landscape"} 
@@ -38,7 +65,7 @@ export default class FirmaScreen extends React.Component<RuteProps>{
           <View style={{ flexDirection: "row" }}>
           <TouchableHighlight style={styles.buttonStyleAcep}
               onPress={() => { this.saveSign() }} >
-              <Text style={styles.text}>Aceptar</Text>
+              <Text style={styles.text}>Aceptar{this.props.route.params.Type} </Text>
             </TouchableHighlight>
             <TouchableHighlight style={styles.buttonStyleReset}
               onPress={() => { this.resetSign() }} >
@@ -51,25 +78,31 @@ export default class FirmaScreen extends React.Component<RuteProps>{
   }
 
   saveSign() {
-//@ts-ignore
+    console.log("Se ejecuta");
+    //@ts-ignore
     this.refs["sign"].saveImage();
   }
-
   resetSign() {
-//@ts-ignore
-      this.refs["sign"].resetImage();
+    //@ts-ignore
+    this.refs["sign"].resetImage();
   }
+  _onSaveEvent= (result:Imagen) =>{//Esta puta mamada me la pse todo un día por que no queria jalar solo se tenia que tranformar en un a arrow function 
+    //EWacha bien bien por si se necesita cambiar esta function solo se ejecuta si es arrow function 
+    //result.encoded - for the base64 encoded png
+    console.log(result.encoded);
+      if(this.state.TypeSignature =="Ev"){
+        
+          console.log("Aqui vamos con el evaluador ");
+      }else{
+        console.log("No es el avaluador ");
+      }
 
-  _onSaveEvent(result:string) {
- 
-      //result.encoded - for the base64 encoded png
-      //result.pathName - for the file path name
-      console.log(result);
   }
-  _onDragEvent() {
-       // This callback will be called when the user enters signature
-      console.log("dragged");
-  }
+ postFirma (firmaImg64:string){
+  //Requiere el tipo para concatenar el llamado al api 
+  PdfAction("POST","Firma");
+}
+
 }
 const styles = StyleSheet.create({
     signature: {
@@ -111,4 +144,4 @@ const styles = StyleSheet.create({
         
     }
 });
-  
+  AppRegistry.registerComponent('FirmaScreen',()=>FirmaScreen);

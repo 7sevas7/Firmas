@@ -3,7 +3,10 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React ,{useEffect, useState,useContext}from 'react';
 import {getFirmaAction}from '../controllers/GetFirma'
 
+
+
 import { RootParams } from "../stateAndProps/PropsRoot";
+import { Contes, Contexx } from "../../App";
 
 type Veneficiario = {
     idBeneficiario:string;
@@ -17,36 +20,32 @@ type Veneficiario = {
 
 type RuteProps= NativeStackScreenProps<RootParams>;
 export default function HomeFirmas({navigation,route}:RuteProps){
-
+  const {imgFirma} = useContext(Contexx) as Contes;
     const [veneficiario,setveneficiario] = useState<Array<Veneficiario>>([]);
   
   
     useEffect( ()=>{
-        const cal =async ()=>{
-          const ll = await getFirmaAction("GET","fridaha");
-          setveneficiario(ll);
-        };
-
-
-       cal();
+      console.log(imgFirma);
+       apiVeneficiarios();
       },[]);
 
-      
-const imprime =()=>{
-  console.log("==>"+veneficiario);
-}
-    
+      const apiVeneficiarios =async ()=>{
+          const usuario = await getFirmaAction("GET","fridaha");
+          setveneficiario(usuario);
+      };
+
+
+    const keys = ()=>{
+      let ran = Math.random().toString(36).substring(7);
+      return ran;
+    }
         return (  
 
             <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', backgroundColor:'#656565'}}>
             <View >
-              <View>
-                <Text>
              
-                </Text>
-              </View>
-            <Text style={{ fontSize: 30 }}>Luz Nayeli Santander Ramírez</Text>
-           <Text style={{ fontSize: 30 }}>Seleccione un beneficiario a capturar firmas</Text>
+            {/* <Text style={{ fontSize: 30 }}>Luz Nayeli Santander Ramírez</Text> */}
+           <Text style={{ fontSize: 30,marginTop:40 }}>Seleccione un beneficiario a capturar firmas</Text>
           <FlatList
              data={veneficiario}
              renderItem={({ item, separators }) => (
@@ -64,12 +63,15 @@ const imprime =()=>{
                  </View>
                </View>
              )}
-             keyExtractor={item => item.idBeneficiario}
+          keyExtractor={item => keys()}
            />
-           <Button title='Recargar'  onPress={imprime}/>
+        <TouchableHighlight style={{backgroundColor:'#6b152b',padding:20, margin:20,display:"flex",justifyContent:"center",alignItems:"center",borderRadius:10}}   onPress={apiVeneficiarios}>
+              <Text style={{color:"white"}}>Recargar</Text>
+           </TouchableHighlight>
+         <TouchableHighlight style={{backgroundColor:'#6b152b',padding:20, margin:20,display:"flex",justifyContent:"center",alignItems:"center",borderRadius:10}}   onPress={()=>navigation.navigate('Prueba')}>
+              <Text style={{color:"white"}}>Recargar</Text>
+           </TouchableHighlight>
        
-          <Button title='Ir'  onPress={()=>navigation.navigate("FirmaInput",{Nombre:"sEBASTIAN",})} /> 
-
            </View>
          </View>
 );

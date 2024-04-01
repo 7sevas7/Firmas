@@ -15,9 +15,12 @@ import PDFScreen from './app/views/PDFScreen';
 import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+//
 //Acciones Api
-
-export const Context = createContext<PdfTypes>({IdEvCom:"",firmaApliEv:"",firmaRespInf:""});
+export type Contes={
+  imgFirma: string
+}
+export const Contexx = createContext<Contes|null>(null);
 
 
 var Stack = createNativeStackNavigator<RootParams>();
@@ -26,7 +29,7 @@ var Stack = createNativeStackNavigator<RootParams>();
 function App(): React.JSX.Element {
 
   return (
-   
+   <Contexx.Provider value={{imgFirma:"Inicio"}}>
      <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen 
@@ -45,9 +48,10 @@ function App(): React.JSX.Element {
           options={{title:"Visualización de Documentos"}}
           component={PDFScreen}
         />
-       
+
         </Stack.Navigator>
      </NavigationContainer>
+     </Contexx.Provider>
        );
 }
 
