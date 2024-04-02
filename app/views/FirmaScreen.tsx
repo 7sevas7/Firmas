@@ -4,14 +4,18 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {  View,StyleSheet,TouchableHighlight,Text, AppRegistry,BackHandler} from 'react-native';
 
 import { RootParams } from '../stateAndProps/PropsRoot';
-import { Contes, Contexx } from '../../App';
-import { PdfAction } from '../controllers/PDFRequest';
+import { HeaderApi } from '../businness/types/HeaderApi'; 
+import { FirmasAction, PdfAction } from '../controllers/PDFRequest';
+
+//Se ejecuta useeffect cada que inicial  la vista, entonces arre de nuevo la peticion de la primera vista y del array buscar IdEvEcom
+
 type RuteProps= NativeStackScreenProps<RootParams,'FirmaInput'>;
 
-
-
  type IState={
-  TypeSignature:string
+  TypeSignature:string|number;
+  IdEvEcom:number | undefined ;
+
+
 }
 type Imagen ={
   encoded:string,
@@ -19,12 +23,16 @@ type Imagen ={
 
 }
 
+
 export default class FirmaScreen extends React.Component<RuteProps,IState>{
   state: IState={
-    TypeSignature:this.props.route.params.Type
+    TypeSignature:this.props.route.params.Type,
+    IdEvEcom:this.props.route.params.DataPdf.IdEvCom,
+ 
   }
-  static hola:string ="Saludo";
+
   componentWillUnmount() {
+    console.log(this.state.IdEvEcom);
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
   componentDidMount() { 
@@ -78,7 +86,7 @@ export default class FirmaScreen extends React.Component<RuteProps,IState>{
   }
 
   saveSign() {
-    console.log("Se ejecuta");
+
     //@ts-ignore
     this.refs["sign"].saveImage();
   }
@@ -86,22 +94,35 @@ export default class FirmaScreen extends React.Component<RuteProps,IState>{
     //@ts-ignore
     this.refs["sign"].resetImage();
   }
-  _onSaveEvent= (result:Imagen) =>{//Esta puta mamada me la pse todo un día por que no queria jalar solo se tenia que tranformar en un a arrow function 
+  _onSaveEvent= async(result:Imagen) =>{//Esta puta mamada me la pse todo un día por que no queria jalar solo se tenia que tranformar en un a arrow function 
     //EWacha bien bien por si se necesita cambiar esta function solo se ejecuta si es arrow function 
     //result.encoded - for the base64 encoded png
     console.log(result.encoded);
-      if(this.state.TypeSignature =="Ev"){
-        
-          console.log("Aqui vamos con el evaluador ");
-      }else{
-        console.log("No es el avaluador ");
+
+      const firmaImg:HeaderApi={
+        method:"POST",
+        route:"",
+        data:result.encoded
       }
 
+
+      if(this.state.TypeSignature =="Ev"){    
+        firmaImg.route = "FirmaEv/"+this.state.IdEvEcom;        
+        //
+      }else{
+        firmaImg.route = "FirmaResp/"+this.state.IdEvEcom;
+        console.log("No es el avaluador ");
+      } 
+      //
+     const mensaje :boolean = await  FirmasAction(firmaImg);
+
+     //Se modficaran para las vistas de este en la otra vista por que no se ejecuta el apí y no se com hacerlo
+     
+     if(mensaje){
+      this.props.navigation.navigate('PdfView',{IdEvCom:this.state.IdEvEcom,});
+     }
   }
- postFirma (firmaImg64:string){
-  //Requiere el tipo para concatenar el llamado al api 
-  PdfAction("POST","Firma");
-}
+
 
 }
 const styles = StyleSheet.create({

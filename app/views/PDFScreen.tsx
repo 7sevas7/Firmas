@@ -3,60 +3,78 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Pdf from 'react-native-pdf';
 import { RootParams } from "../stateAndProps/PropsRoot";
 import { useState, useEffect } from "react";
-import {PdfAction} from "../controllers/PDFRequest";
+import {FirmasAction, PdfAction} from "../controllers/PDFRequest";
+import { HeaderApi } from "../businness/types/HeaderApi";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import { Beneficiario } from "./HomeFirma";
+import { getFirmaAction } from "../controllers/GetFirma";
 
 type RuteProps = NativeStackScreenProps<RootParams, 'PdfView'>;
+
 type States = {
   mainPdf: string;
-  firmaApliEv: string;
-  firmaRespInf: string;
+  firmaApliEv: string|undefined;
+  firmaRespInf: string | undefined;
+  idEvEcom:number |undefined;
 };
 
 function PDFScreen({ navigation, route }: RuteProps) {
-  const [Pdfs, setFirmas] = useState<States>();
+  const [PdfsState, setFirmasState] = useState<States>();
 
   useEffect(() => {
     //Llamando Api para pdf Principal
-    Setters();
-  }, []);
-  const Setters = async () => {
-    const mainPdf: string = await PdfAction("GET", route.params.IdEvCom);
+    Getter();
+  },[route]);
+  
+ 
+  const Getter = async () => {
+    
+    const bene:Array<Beneficiario> = await getFirmaAction();
+    //@ts-ignore //Para poder 
+    const objetivo:Beneficiario = bene.find(u=>u.idEvEcom == route.params.IdEvCom );    
+    
+  const header:HeaderApi={
+    method:"GET",
+    route:route.params.IdEvCom,
+    data:""
+  }
+    const mainPdf: string = await PdfAction(header);
 
-    setFirmas({
+    setFirmasState({
       mainPdf: mainPdf,//Es el PDF, donde muestra todos sus datos
-      firmaApliEv: route.params.firmaApliEv,//Img Firma Aplica Evaluador
-      firmaRespInf: route.params.firmaRespInf//Img Firma Responsable de la información 
+      firmaApliEv: objetivo.firmaApliEv,//Img Firma Aplica Evaluador
+      firmaRespInf: objetivo.firmaRespInf,//Img Firma Responsable de la información 
+      idEvEcom : route.params.IdEvCom
     });
   };
   //EV quiere decir que es la firma del Evaluadorv 
-const PostFirma =(tipo:string)=>{
-    navigation.navigate('FirmaInput',{Type:tipo});
-}
-  const source = { uri: "data:application/pdf;base64," + Pdfs?.mainPdf };
-    
+  const PostFirma =(tipo:string)=>{
+    navigation.navigate('FirmaInput',{Type:tipo,DataPdf:{IdEvCom:PdfsState?.idEvEcom}});
+  }
+  const source = { uri: "data:application/pdf;base64," + PdfsState?.mainPdf };
+    const Terminar = async()=>{
+      const argument:HeaderApi={
+        method:'POST',
+        route:'concluir/'+ PdfsState?.idEvEcom,
+        data:""
+      }
+      const concluido:boolean = await FirmasAction(argument);
+      if(concluido){
+        navigation.navigate('Home');
+      }
+    }
+
   return (
 
     <View style={styles.container}>
 
-      <Pdf source={source}
+    {/**Visor de PDF */}
+      <Pdf source={source} style={styles.pdf} />
 
-        onLoadComplete={(numberOfPages, filePath) => {
-          console.log(`number of pages: ${numberOfPages}`);
-        }}
-        onPageChanged={(page, numberOfPages) => {
-          console.log(`current page: ${page}`);
-        }}
-        onError={(error) => {
-          console.log(error);
-        }}
-        onPressLink={(uri) => {
-          console.log(`Link presse: ${uri}`)
-        }}
-        style={styles.pdf} />
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center',height:'40%' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center',height:'50%' ,width:'100%'}}>
 
         <View style={{ alignItems: 'center', justifyContent: 'space-between', width: '50%' }}>
-          <Image style={{ width: '50%', height: '60%' }} source={{ uri: "data:image/png;base64," + Pdfs?.firmaApliEv }}></Image>
+          <Image style={{ width: '50%', height: '60%' }} source={{ uri: "data:image/png;base64," + PdfsState?.firmaApliEv }}></Image>
 
           <TouchableHighlight
             activeOpacity={0.6}
@@ -64,20 +82,31 @@ const PostFirma =(tipo:string)=>{
             onPress={()=>PostFirma("Ev")}
             style={{ borderRadius: 10, padding: 10, marginTop: 6, backgroundColor: "#e09dbd" }}
           >
-            <Text style={{ color: 'white', fontSize: 20 }}>Firmar Evaluador</Text>
-
+            <Text style={{ color: 'white', fontSize: 16 }}>Firmar Evaluador</Text>
+          </TouchableHighlight>
+        </View>
+        {/* otro botton de acabar con todo*/}
+        <View style={{alignItems:'center'}}>
+          <TouchableHighlight 
+              style={{borderRadius:10,padding:10,marginTop:6, backgroundColor:'#278d21'}}
+              onPress={Terminar}>
+            <Text style={{color:'white',fontSize:20}}>
+              Terminar
+            </Text>
           </TouchableHighlight>
         </View>
 
+        
+        {/*Tercera parte de la parte de abajo  */}
         <View style={{ alignItems: 'center', justifyContent: 'space-between', width: '50%' }}>
-          <Image style={{ width: '50%', height: '60%' }} source={{ uri: "data:image/png;base64," + Pdfs?.firmaRespInf }}></Image>
+          <Image style={{ width: '50%', height: '60%' }} source={{ uri: "data:image/png;base64," + PdfsState?.firmaRespInf }}></Image>
 
           <TouchableHighlight
             onPress={()=>PostFirma("Resp")}
             underlayColor="#DDDDDD"
-            style={{ backgroundColor: '#a9453b', borderRadius: 10, padding: 10, marginTop: 6 }}
+            style={{ backgroundColor: '#a9453b', borderRadius: 10, padding: 10, marginTop: 18 }}
           >
-            <Text style={{ color: 'white', fontSize: 20 }}>Firmar Responsable de la Información</Text>
+            <Text style={{ color: 'white', fontSize: 16, }}>Firmar Responsable de la Información</Text>
           </TouchableHighlight>
         </View>
       </View>

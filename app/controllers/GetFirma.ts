@@ -1,11 +1,16 @@
 import { FIRMA_DATA ,INIT_DATA} from '../endPoints';
 
-
-export const  getFirmaAction =  (method:string, route:string) => {
-  const config = { method: method, headers: { 'Content-Type': 'application/json', } };
-  console.log("Api");
+//Aqui sera la configuración del usuario 
+type Usuario={
+  useName:string
+  method:string
+}
+//Sera de esta manera ya que esta funcion solo se usa con estos dos parametros 
+export const  getFirmaAction =  () => {
+  const user:Usuario={useName:"fridaha",method:"GET"}
+  const config = { method: user.method, headers: { 'Content-Type': 'application/json', } };  
   try{
-  const res = fetch(INIT_DATA + route, config)
+  const res = fetch(INIT_DATA + user.useName, config)
   .then((res)=>res.json())
   .catch((err)=>{console.log(err)});
   return res;

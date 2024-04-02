@@ -6,11 +6,10 @@ import {getFirmaAction}from '../controllers/GetFirma'
 
 
 import { RootParams } from "../stateAndProps/PropsRoot";
-import { Contes, Contexx } from "../../App";
 
-type Veneficiario = {
+export interface Beneficiario {
     idBeneficiario:string;
-    idEvEcom:string;
+    idEvEcom:number;
     firmaRespInf:string;
     curp:string;
     nombre:string;
@@ -20,17 +19,15 @@ type Veneficiario = {
 
 type RuteProps= NativeStackScreenProps<RootParams>;
 export default function HomeFirmas({navigation,route}:RuteProps){
-  const {imgFirma} = useContext(Contexx) as Contes;
-    const [veneficiario,setveneficiario] = useState<Array<Veneficiario>>([]);
+    const [veneficiario,setveneficiario] = useState<Array<Beneficiario>>([]);
   
   
     useEffect( ()=>{
-      console.log(imgFirma);
        apiVeneficiarios();
       },[]);
 
       const apiVeneficiarios =async ()=>{
-          const usuario = await getFirmaAction("GET","fridaha");
+          const usuario = await getFirmaAction();
           setveneficiario(usuario);
       };
 
@@ -57,7 +54,7 @@ export default function HomeFirmas({navigation,route}:RuteProps){
                    <TouchableHighlight
                      activeOpacity={0.6}
                      underlayColor="#DDDDDD"
-                     onPress={()=>navigation.navigate("PdfView",{IdEvCom:item.idEvEcom,firmaApliEv: item.firmaApliEv,firmaRespInf: item.firmaRespInf })} >
+                     onPress={()=>navigation.navigate("PdfView",{IdEvCom:item.idEvEcom })} >
                      <Text style={{ fontSize: 20,color:'black' }}>{item.curp}</Text>
                    </TouchableHighlight>
                  </View>
@@ -68,9 +65,7 @@ export default function HomeFirmas({navigation,route}:RuteProps){
         <TouchableHighlight style={{backgroundColor:'#6b152b',padding:20, margin:20,display:"flex",justifyContent:"center",alignItems:"center",borderRadius:10}}   onPress={apiVeneficiarios}>
               <Text style={{color:"white"}}>Recargar</Text>
            </TouchableHighlight>
-         <TouchableHighlight style={{backgroundColor:'#6b152b',padding:20, margin:20,display:"flex",justifyContent:"center",alignItems:"center",borderRadius:10}}   onPress={()=>navigation.navigate('Prueba')}>
-              <Text style={{color:"white"}}>Recargar</Text>
-           </TouchableHighlight>
+
        
            </View>
          </View>

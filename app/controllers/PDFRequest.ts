@@ -1,10 +1,11 @@
 
-import { PDF_DATA } from "../endPoints";
+import { HeaderApi } from "../businness/types/HeaderApi";
+import { PDF_DATA,FIRMA_DATA } from "../endPoints";
 
 
 
 
-export const PdfAction = async (method: string, route: string,data:string =""): Promise<string> => {
+export const PdfAction = async ({method,route,data}:HeaderApi): Promise<string> => {
     const config = { method: method, headers: { 'Content-Type': 'application/json' }, body:data };
   
     try {
@@ -13,17 +14,26 @@ export const PdfAction = async (method: string, route: string,data:string =""): 
   
       if (!response.ok) {
         throw new Error('No existe documento');
+        
       }
   
       const pdfText = await response.text();
       console.log(pdfText);
       return pdfText;
     } catch (error) {
-      throw new Error('Error de conexión: ' );
+      throw new Error('Error de conexión: =>'+error );
     }
   };
-  
-  export const PostPDf = ()=>{
 
-  }
-
+  export const FirmasAction= async(header:HeaderApi):Promise<boolean> =>{
+     const config = { method: header.method, headers: { 'Content-Type': 'application/json' }, body:JSON.stringify(header.data) };
+console.log(FIRMA_DATA+header.route);
+try{   
+const res = await  fetch(FIRMA_DATA+header.route,config); 
+      
+       return true;
+      }catch(err){
+        console.log(err);
+        return false;
+      }
+  };

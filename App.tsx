@@ -1,10 +1,10 @@
 
-import React, { useState,createContext } from 'react';
+import React, { useState,createContext, useEffect } from 'react';
 //Configuracion de estilos
 import { StyleSheet} from 'react-native';
 
 //Configuracion de Estados y propiedades 
-import {PdfTypes,RootParams} from './app/stateAndProps/PropsRoot';
+import {RootParams} from './app/stateAndProps/PropsRoot';
 
 //Vistas 
 import FirmaScreen from './app/views/FirmaScreen';
@@ -12,49 +12,60 @@ import FirmaHome from './app/views/HomeFirma';
 import PDFScreen from './app/views/PDFScreen';
 
 //Configuracion de Navigate 
-import { NavigationContainer} from '@react-navigation/native';
+import { NavigationContainer, StackActions} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Login } from './app/views/Login';
 
 //
 //Acciones Api
-export type Contes={
-  imgFirma: string
-}
-export const Contexx = createContext<Contes|null>(null);
+
+
 
 
 var Stack = createNativeStackNavigator<RootParams>();
 
 
 function App(): React.JSX.Element {
+const [show,setShow] = useState<boolean>(true);
+
+useEffect(()=>{
+
+
+});
 
   return (
-   <Contexx.Provider value={{imgFirma:"Inicio"}}>
      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator >          
+
+         <Stack.Screen  name="Login">
+         {()=>(
+            <Stack.Navigator>
+             <Stack.Screen name="Main" component={Login}/>
+            </Stack.Navigator>
+         )} 
+          </Stack.Screen>
+        
           <Stack.Screen 
             name="Home"
             options={{title:"Inicio"}}
             component={FirmaHome}
           />
+            
           <Stack.Screen 
             name="FirmaInput"
-            options={{title:"Captura de Firmas"}}
+            options={{title:"Firmas"}}
             component={FirmaScreen}
-            
           />
         <Stack.Screen
           name="PdfView"
           options={{title:"Visualización de Documentos"}}
           component={PDFScreen}
         />
-
-        </Stack.Navigator>
-     </NavigationContainer>
-     </Contexx.Provider>
-       );
+      </Stack.Navigator>
+    </NavigationContainer>
+     
+  );
 }
-
 const styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 32,
