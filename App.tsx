@@ -12,8 +12,8 @@ import FirmaHome from './app/views/HomeFirma';
 import PDFScreen from './app/views/PDFScreen';
 
 //Configuracion de Navigate 
-import { NavigationContainer, StackActions} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer} from '@react-navigation/native';
+import { createNativeStackNavigator, } from '@react-navigation/native-stack';
 import { Login } from './app/views/Login';
 
 //
@@ -36,18 +36,10 @@ useEffect(()=>{
   return (
      <NavigationContainer>
         <Stack.Navigator >          
-
-         <Stack.Screen  name="Login">
-         {()=>(
-            <Stack.Navigator>
-             <Stack.Screen name="Main" component={Login}/>
-            </Stack.Navigator>
-         )} 
-          </Stack.Screen>
-        
+       
           <Stack.Screen 
             name="Home"
-            options={{title:"Inicio"}}
+            options={{title:"Inicio",headerShown:false}}
             component={FirmaHome}
           />
             
