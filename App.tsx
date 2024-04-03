@@ -24,25 +24,29 @@ import { Login } from './app/views/Login';
 
 var Stack = createNativeStackNavigator<RootParams>();
 
+const showAll = ():boolean=>{
+  return false;
+}
 
 function App(): React.JSX.Element {
-const [show,setShow] = useState<boolean>(true);
-
+const [stateShow,setShow] = useState<boolean>(false);
 useEffect(()=>{
 
 
 });
-
+const show = showAll();
   return (
      <NavigationContainer>
         <Stack.Navigator >          
-       
+       {stateShow ? (
           <Stack.Screen 
             name="Home"
             options={{title:"Inicio",headerShown:false}}
             component={FirmaHome}
           />
-            
+       ):(
+        <Stack.Screen name='Login' component={Login}/>
+       )}
           <Stack.Screen 
             name="FirmaInput"
             options={{title:"Firmas"}}
