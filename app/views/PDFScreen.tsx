@@ -4,8 +4,7 @@ import Pdf from 'react-native-pdf';
 import { RootParams } from "../stateAndProps/PropsRoot";
 import { useState, useEffect } from "react";
 import {FirmasAction, PdfAction} from "../controllers/PDFRequest";
-import { HeaderApi } from "../businness/types/HeaderApi";
-import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import { HeaderApi } from "../stateAndProps/HeaderApi";
 import { Beneficiario } from "./HomeFirma";
 import { getFirmaAction } from "../controllers/GetFirma";
 

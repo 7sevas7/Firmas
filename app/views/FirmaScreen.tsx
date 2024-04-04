@@ -4,7 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {  View,StyleSheet,TouchableHighlight,Text, AppRegistry,BackHandler} from 'react-native';
 
 import { RootParams } from '../stateAndProps/PropsRoot';
-import { HeaderApi } from '../businness/types/HeaderApi'; 
+import { HeaderApi } from '../stateAndProps/HeaderApi'; 
 import { FirmasAction, PdfAction } from '../controllers/PDFRequest';
 
 //Se ejecuta useeffect cada que inicial  la vista, entonces arre de nuevo la peticion de la primera vista y del array buscar IdEvEcom
@@ -165,4 +165,4 @@ const styles = StyleSheet.create({
         
     }
 });
-  AppRegistry.registerComponent('FirmaScreen',()=>FirmaScreen);
+//  AppRegistry.registerComponent('FirmaScreen',()=>FirmaScreen);

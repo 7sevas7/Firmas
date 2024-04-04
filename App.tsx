@@ -1,7 +1,7 @@
 
 import React, { useState,createContext, useEffect } from 'react';
 //Configuracion de estilos
-import { StyleSheet} from 'react-native';
+import { AppRegistry, StyleSheet} from 'react-native';
 
 //Configuracion de Estados y propiedades 
 import {RootParams} from './app/stateAndProps/PropsRoot';
@@ -15,6 +15,7 @@ import PDFScreen from './app/views/PDFScreen';
 import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator, } from '@react-navigation/native-stack';
 import { Login } from './app/views/Login';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //
 //Acciones Api
@@ -24,29 +25,28 @@ import { Login } from './app/views/Login';
 
 var Stack = createNativeStackNavigator<RootParams>();
 
-const showAll = ():boolean=>{
-  return false;
-}
-
 function App(): React.JSX.Element {
-const [stateShow,setShow] = useState<boolean>(false);
+  const [stateShow,setShow] = useState<boolean>(false);
+
 useEffect(()=>{
 
-
 });
-const show = showAll();
+const VerificacionLogin =async()=>{
+ 
+}
   return (
      <NavigationContainer>
-        <Stack.Navigator >          
-       {stateShow ? (
+        <Stack.Navigator initialRouteName={stateShow?'Home':'Login'}>          
+       <Stack.Screen 
+          name='Login' 
+          component={Login}
+          options={{headerShown:false}}
+          />           
           <Stack.Screen 
             name="Home"
-            options={{title:"Inicio",headerShown:false}}
+            options={{headerShown:false}}
             component={FirmaHome}
           />
-       ):(
-        <Stack.Screen name='Login' component={Login}/>
-       )}
           <Stack.Screen 
             name="FirmaInput"
             options={{title:"Firmas"}}
@@ -59,9 +59,9 @@ const show = showAll();
         />
       </Stack.Navigator>
     </NavigationContainer>
-     
   );
 }
+//AppRegistry.registerComponent('App',()=>App);
 const styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 32,

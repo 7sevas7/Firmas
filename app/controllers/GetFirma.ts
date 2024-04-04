@@ -1,16 +1,15 @@
 import { FIRMA_DATA ,INIT_DATA} from '../endPoints';
-
+import { Usuario } from '../stateAndProps/HeaderApi';
+import { LocalUser } from '../utils/LocalUser';
 //Aqui sera la configuración del usuario 
-type Usuario={
-  useName:string
-  method:string
-}
+
 //Sera de esta manera ya que esta funcion solo se usa con estos dos parametros 
-export const  getFirmaAction =  () => {
-  const user:Usuario={useName:"fridaha",method:"GET"}
+export const  getFirmaAction =  async () => {
+  const user:Usuario = await LocalUser();
+  user.method ='GET';
   const config = { method: user.method, headers: { 'Content-Type': 'application/json', } };  
   try{
-  const res = fetch(INIT_DATA + user.useName, config)
+  const res = fetch(INIT_DATA + user.userName, config)
   .then((res)=>res.json())
   .catch((err)=>{console.log(err)});
   return res;

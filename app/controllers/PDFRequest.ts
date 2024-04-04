@@ -1,5 +1,5 @@
 
-import { HeaderApi } from "../businness/types/HeaderApi";
+import { HeaderApi } from "../stateAndProps/HeaderApi";
 import { PDF_DATA,FIRMA_DATA } from "../endPoints";
 
 
