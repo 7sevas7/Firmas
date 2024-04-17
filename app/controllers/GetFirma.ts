@@ -5,10 +5,13 @@ import { LocalUser } from '../utils/LocalUser';
 
 //Sera de esta manera ya que esta funcion solo se usa con estos dos parametros 
 export const  getFirmaAction =  async () => {
-  const user:Usuario = await LocalUser();
+  const user:Usuario|undefined = await LocalUser();
+  //@ts-ignore
   user.method ='GET';
+  //@ts-ignore
   const config = { method: user.method, headers: { 'Content-Type': 'application/json', } };  
   try{
+    //@ts-ignore
   const res = fetch(INIT_DATA + user.userName, config)
   .then((res)=>res.json())
   .catch((err)=>{console.log(err)});

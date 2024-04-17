@@ -16,6 +16,8 @@ import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator, } from '@react-navigation/native-stack';
 import { Login } from './app/views/Login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LocalUser } from './app/utils/LocalUser';
+import { Usuario } from './app/stateAndProps/HeaderApi';
 
 //
 //Acciones Api
@@ -27,26 +29,32 @@ var Stack = createNativeStackNavigator<RootParams>();
 
 function App(): React.JSX.Element {
   const [stateShow,setShow] = useState<boolean>(false);
-
+  const [usuario, setUsuario] = useState<Usuario | undefined>();
 useEffect(()=>{
 
-});
+VerificacionLogin();
+
+},[]);
 const VerificacionLogin =async()=>{
- 
+  const user:Usuario|undefined = await LocalUser();
+  setUsuario(user);
+
 }
   return (
      <NavigationContainer>
-        <Stack.Navigator initialRouteName={stateShow?'Home':'Login'}>          
+        <Stack.Navigator  initialRouteName={usuario == undefined ? 'Login':'Home'} >          
+       
        <Stack.Screen 
           name='Login' 
           component={Login}
           options={{headerShown:false}}
           />           
-          <Stack.Screen 
+       <Stack.Screen 
             name="Home"
             options={{headerShown:false}}
             component={FirmaHome}
           />
+
           <Stack.Screen 
             name="FirmaInput"
             options={{title:"Firmas"}}
