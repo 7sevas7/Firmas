@@ -13,16 +13,33 @@ export const Login = ({navigation,route}:RuteProps)=>{
     //Estados 
     const [showModal,setShowModal] = useState<boolean>(false);
     const [msgError,setMsgError] = useState<string>();
+    
+    const [userName, setUserName] = useState<string|undefined>();
+  const [userPass,setUserPass] = useState<string|undefined>();
 
-    const ingresar = ()=>{
+    const ingresar =async ()=>{
+        if(userPass == undefined  || userName == undefined){
+          setMsgError("Ingresa usuario y contraseña");
+          setShowModal(true);
+          return;
+        }
         //Sera el llamado al api 
         //Tambien se podra mostrar el modal para en caso de que no se el ususario      
         try{
           //Aqui esta madre solo modificar tipos
-          GetUsuario({nameUser:"Frida De tal",userName:"fridaha",passwod:"",method:'GET'});
-          navigation.dispatch(StackActions.replace('Home'));              
+          const entry =await  GetUsuario({userName:userName,passwod:userPass,method:'GET'});          
+          if(entry){
+            console.log("Listo para ingresar");
+            navigation.dispatch(StackActions.replace('Home'));              
+          }else{
+            setUserName(undefined);
+            setUserPass(undefined);
+            setMsgError("Ingresa usuario y contraseña correctos");
+           setShowModal(true);  
+          }
         }catch(err){
-          
+          setUserName(undefined);
+          setUserPass(undefined);
           setMsgError(String(err));
           setShowModal(true);
         } 
@@ -30,10 +47,10 @@ export const Login = ({navigation,route}:RuteProps)=>{
 const ModalMsg =()=>{
         return(
           <Modal
-        animationType="slide"
-        transparent={true}
-        visible={showModal}
-        >
+              animationType="slide"
+              transparent={true}
+              visible={showModal}>
+                
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>{msgError}</Text>
@@ -57,6 +74,8 @@ const ModalMsg =()=>{
                 <View style={{width:'80%'}}>
                     <Text style={{fontSize:16}}>Usuario</Text>
                     <TextInput
+                    value={userName}
+                      onChangeText={setUserName}
                       style={{
                         fontSize:20,
                         backgroundColor:"transparent",
@@ -69,8 +88,9 @@ const ModalMsg =()=>{
                     />          
                     <Text style={{fontSize:16,marginTop:40}}>Contraseña</Text>
                     <TextInput
+                    value={userPass}
+                    onChangeText={setUserPass}
                       style={{
-                        
                         fontSize:20,
                         backgroundColor:"transparent",
                         borderBottomColor:"#e3e3e390",

@@ -1,10 +1,11 @@
-import { Text,View,FlatList,TouchableHighlight,Button, StyleSheet, Pressable } from "react-native";
+import { Text,View,FlatList,TouchableHighlight,StyleSheet, Pressable, Image } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React ,{useEffect, useState}from 'react';
 import {getFirmaAction}from '../controllers/GetFirma'
 import { RootParams } from "../stateAndProps/PropsRoot";
 import { Usuario } from "../stateAndProps/HeaderApi";
-import { LocalUser } from "../utils/LocalUser";
+import { LocalUser, exitUser } from "../utils/LocalUser";
+import { StackActions } from "@react-navigation/native";
 
 export interface Beneficiario {
     idBeneficiario:string;
@@ -24,7 +25,6 @@ export default function HomeFirmas({navigation,route}:RuteProps){
 
 
     useEffect( ()=>{
-      console.log("HHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeome");
       apiVeneficiarios();
       GetUsuario();
       },[route]);
@@ -36,8 +36,12 @@ export default function HomeFirmas({navigation,route}:RuteProps){
           const usuario = await getFirmaAction();
           setBeneficiarios(usuario);
       };
-
-
+      //Eliminar session y retornaar al Login
+const exit =()=>{
+    exitUser();
+    navigation.dispatch(StackActions.replace('Login'));
+}
+//Esta funcion solo es para evitar errores del dom
     const keys = ()=>{
       let ran = Math.random().toString(36).substring(7);
       return ran;
@@ -47,9 +51,9 @@ export default function HomeFirmas({navigation,route}:RuteProps){
             <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', backgroundColor:'#a3a3a3'}}>
               <View style={{backgroundColor:'#a3a3a3'}}>
                 <View style={styleAll.cardUser}>
-                  <Text style={{color:'#000',fontWeight:'bold',fontSize:16}}>{usuario?.nameUser}</Text>
-                <Pressable style={styleAll.buttonExit}>
-                    <Text style={{textAlign:'center'}}>I</Text>
+                  <Text style={{color:'#000',fontWeight:'bold',fontSize:16}}>{usuario?.userName}</Text>
+                <Pressable style={styleAll.buttonExit} onPress={exit}>
+                  <Image  style={{width:40,height:40}}source={require('../img/exit.png')}/>
                   </Pressable>
                 </View> 
 
@@ -122,7 +126,8 @@ const styleAll = StyleSheet.create({
     borderBottomEndRadius:10
   },
   buttonExit:{
-    backgroundColor:'#6b152b',width:40,
+    backgroundColor:'transparent',
+    width:40,
     height:40, borderRadius:8, 
     display:"flex",justifyContent:"center",
     alignItems:"center"

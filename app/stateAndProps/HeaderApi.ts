@@ -5,8 +5,7 @@ export type HeaderApi={
 }
 
 export type Usuario= {
-  nameUser:string,
   userName:string,
-  passwod:string,
-  method:string
+  passwod:string|undefined,
+  method:string|undefined
 }
