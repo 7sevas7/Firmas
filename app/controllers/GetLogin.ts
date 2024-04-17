@@ -31,14 +31,18 @@ const respuesta = await fetch("http://172.16.2.34/sieb_pruebas/gral/WebServicesP
   //@ts-ignore
   .then((result) => result.root?.children[0].children[0].children[0].content)
 
-  .catch((error) => false);
+  .catch((error) =>{ throw new Error(error);});
 
-  if(respuesta =="true" ) {
-    await setLocaluser(usuario);  
-    return true;
-}
-    else{
-         return false;}
+  try {
+      if(respuesta =="true" ) {
+           await setLocaluser(usuario);  
+           return true;
+       } 
+    
+  } catch (err) {
+      throw new Error("Error de Storage");
+  }
+  
 }
 
 export default GetUsuario;

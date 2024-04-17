@@ -29,7 +29,7 @@ export default function HomeFirmas({navigation,route}:RuteProps){
       GetUsuario();
       },[route]);
       const GetUsuario = async ()=>{
-        const us:Usuario = await LocalUser();
+        const us:Usuario|undefined = await LocalUser();
         setUsuario(us);
       }
       const apiVeneficiarios =async ()=>{

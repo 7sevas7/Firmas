@@ -68,7 +68,7 @@ const ModalMsg =()=>{
         <View style={{flex:1,justifyContent:'center', alignItems:'center',backgroundColor:'#e3e3e3'}}>
             <View style={{paddingBottom:30, width:'60%',backgroundColor:'#282a3670', marginVertical:30,borderRadius:20,alignItems:'center'}}>
                 <Text style={{fontSize:30,color:'#fff', margin:20}}>
-                    Ingreso
+                    Ingresos
                 </Text>
                 {/*para ingresar al parecer creare una lista de usuario*/}
                 <View style={{width:'80%'}}>

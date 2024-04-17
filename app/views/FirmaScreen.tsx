@@ -73,7 +73,7 @@ export default class FirmaScreen extends React.Component<RuteProps,IState>{
           <View style={{ flexDirection: "row" }}>
           <TouchableHighlight style={styles.buttonStyleAcep}
               onPress={() => { this.saveSign() }} >
-              <Text style={styles.text}>Aceptar{this.props.route.params.Type} </Text>
+              <Text style={styles.text}>Aceptar</Text>
             </TouchableHighlight>
             <TouchableHighlight style={styles.buttonStyleReset}
               onPress={() => { this.resetSign() }} >
