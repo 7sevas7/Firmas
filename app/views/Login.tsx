@@ -27,7 +27,7 @@ export const Login = ({navigation,route}:RuteProps)=>{
         //Tambien se podra mostrar el modal para en caso de que no se el ususario      
         try{
           //Aqui esta madre solo modificar tipos
-          const entry =await  GetUsuario({userName:userName,passwod:userPass,method:'GET'});          
+          const entry =await  GetUsuario({userName:userName.trim(),passwod:userPass,method:'GET'});          
           if(entry){
             console.log("Listo para ingresar");
             navigation.dispatch(StackActions.replace('Home'));              
